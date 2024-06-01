@@ -1,7 +1,20 @@
 
 function App(){
   return (
-    <h1>que tal</h1>
+    <div>
+
+      <header>
+        <input type="text" placeholder="Ingresar titulo tarea"/>
+        <button>Agregar</button>
+      </header>
+
+      <article>
+        <input type="checkbox" />
+        <span>Titulo tarea numero uno</span>
+        <button>Eliminar</button>
+      </article>
+
+    </div>
   );
 }
 
