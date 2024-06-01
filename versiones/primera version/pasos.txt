@@ -1,0 +1,8 @@
+> Hacer un to-do app donde se cumplan los siguientes requerimientos:
+
+  1.- Agregar una tarea nueva por su titulo.
+  2.- Crear la tarea.
+  3.- Que se pueda completar la tarea (debe tacharse).
+  4.- Que se pueda eliminar la tarea.
+
+>> Inicialmente no hay grado de importancia segun la tarea.
