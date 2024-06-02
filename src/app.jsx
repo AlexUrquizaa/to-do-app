@@ -1,20 +1,35 @@
+import { useState } from "react";
+import './app.css';
 
 function App(){
-  return (
-    <div>
+  const [title, setTitle] = useState('');
 
-      <header>
-        <input type="text" placeholder="Ingresar titulo tarea"/>
-        <button>Agregar</button>
-      </header>
+  // Asigno valores al value del input. Ya tengo un titulo de tarea.
+  const handleInputTask = (event) => {
+    const value = event.target.value;
+    setTitle(value);
+  }
+
+  const handleClick = (event) => {
+    event.preventDefault();
+    // Actualizar aqui la lista?
+  }
+
+  return (
+    <>
+
+      <form onSubmit={handleClick}>
+        <input type='text' placeholder='Ingresar titulo tarea' onChange={handleInputTask} value={title}/>
+        <button type='submit'>Agregar</button>
+      </form>
 
       <article>
-        <input type="checkbox" />
+        <input type='checkbox'/>
         <span>Titulo tarea numero uno</span>
         <button>Eliminar</button>
       </article>
 
-    </div>
+    </>
   );
 }
 

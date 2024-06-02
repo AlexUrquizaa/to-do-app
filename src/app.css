@@ -1,0 +1,67 @@
+/* app.css */
+
+/* Estilo para el contenedor principal */
+form {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+/* Estilo para el input de la tarea */
+form input[type="text"] {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-right: 10px;
+  flex-grow: 1;
+  max-width: 300px;
+}
+
+/* Estilo para el botón de agregar */
+form button {
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+form button:hover {
+  background-color: #218838;
+}
+
+/* Estilo para cada tarea (article) */
+article {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo para el checkbox */
+article input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+/* Estilo para el texto de la tarea */
+article span {
+  flex-grow: 1;
+}
+
+/* Estilo para el botón de eliminar */
+article button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+article button:hover {
+  background-color: #c82333;
+}
