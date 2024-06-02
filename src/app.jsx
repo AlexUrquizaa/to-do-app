@@ -1,10 +1,11 @@
 import { useState } from "react";
+import {v4 as newTaskID}  from "uuid";
 import './app.css';
 
 function App(){
   const [title, setTitle] = useState('');
+  const [tasks, setTask] = useState([]);
 
-  // Asigno valores al value del input. Ya tengo un titulo de tarea.
   const handleInputTask = (event) => {
     const value = event.target.value;
     setTitle(value);
@@ -12,23 +13,40 @@ function App(){
 
   const handleClick = (event) => {
     event.preventDefault();
-    // Actualizar aqui la lista?
+
+    setTask(prevState => ([
+      ...prevState,
+      {
+        title: title, 
+        id: newTaskID(), 
+        isCompleted: false
+      }
+    ]));
+  }
+
+  const handleChecked = (task) => {
+    const updateTask = {...task, isCompleted: !task.isCompleted};
+    setTask(prevState => prevState.map(item => item.id === task.id ? updateTask : item));
   }
 
   return (
     <>
-
       <form onSubmit={handleClick}>
         <input type='text' placeholder='Ingresar titulo tarea' onChange={handleInputTask} value={title}/>
         <button type='submit'>Agregar</button>
       </form>
 
-      <article>
-        <input type='checkbox'/>
-        <span>Titulo tarea numero uno</span>
-        <button>Eliminar</button>
-      </article>
-
+      { tasks.length === 0 ? ( <p>No hay tareas disponibles</p>) : 
+        (
+          tasks.map(task => (
+            <article key={task.id}>
+              <input type='checkbox' onChange={() => handleChecked(task)} checked={task.isCompleted}/>
+              <span className={task.isCompleted ? "completed" : ""}>{task.title}</span>
+              <button>Eliminar</button>
+            </article>
+          ))
+        )
+      }
     </>
   );
 }
