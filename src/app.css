@@ -66,6 +66,10 @@ article span {
   flex-grow: 1;
 }
 
+article span.completed {
+  text-decoration: line-through;
+}
+
 /* Estilo para el botón de eliminar */
 article button {
   background-color: #dc3545;
