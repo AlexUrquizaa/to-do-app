@@ -1,10 +1,17 @@
 /* app.css */
 
+/* Transiciones suaves */
+* {
+  transition: all 0.3s ease;
+}
+
 /* Estilo para el contenedor principal */
 form {
   display: flex;
   justify-content: center;
   margin-bottom: 20px;
+  width: 100%;
+  max-width: 500px;
 }
 
 /* Estilo para el input de la tarea */
@@ -15,6 +22,11 @@ form input[type="text"] {
   margin-right: 10px;
   flex-grow: 1;
   max-width: 300px;
+  transition: border-color 0.3s ease;
+}
+
+form input[type="text"]:focus {
+  border-color: #28a745;
 }
 
 /* Estilo para el botón de agregar */
@@ -40,6 +52,8 @@ article {
   margin-bottom: 10px;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px;
 }
 
 /* Estilo para el checkbox */
