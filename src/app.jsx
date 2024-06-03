@@ -3,6 +3,10 @@ import { ShowTaskList } from "./componentes/ShowTaskList";
 import { TaskForm } from "./componentes/TaskForm";
 import './app.css';
 
+// Realizar el mismo proyecto hasta este punto pero usando tests.
+// Aplicar useContext para el useTaskCard. Asi evito el prop drill. De paso despejo el App.
+// Ver que otros hooks aplicar (useReduce, useID, useRef, useMemo/Callback).
+
 function App(){
   const { tasks, addTask, updateTask, removeTask} = useTaskList();
 

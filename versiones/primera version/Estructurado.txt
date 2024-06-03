@@ -1,0 +1,38 @@
+TO-DO APP/
+│
+├── README.md
+├── .gitignore
+├── LICENSE
+│
+├── index.html
+├── main.jsx
+├── index.css
+├── copiaSeguridad.txt
+├── versiones
+│   │
+│   └── primera version
+│       ├── pasos.txt
+│       ├── primerEstilo.png
+│       └── Estructurado.txt
+│
+├── src/
+│   │
+│   ├── app.jsx
+│   ├── components/
+│   │   ├── ShowTaskList.jsx
+│   │   ├── TaskCard.jsx
+│   │   └── TaskForm.jsx
+│   └── hooks/
+│       ├── useTaskList.js
+│       ├── useTaskTitle.js
+│
+├── tests/
+│   ├── App.test.jsx
+│   ├── Archivo1.test.jsx
+│   ├── Archivo2.test.jsx
+│   └── Archivo3.test.jsx
+│
+├── node_modules
+├── vite.config.js
+├── package.json
+└── package-lock.json
