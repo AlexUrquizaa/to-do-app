@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { v4 as newTaskID }  from "uuid";
 import { render, screen, cleanup, fireEvent, getByRole } from "@testing-library/react";
-import { afterEach, describe , it, expect, beforeEach} from "vitest";
+import { afterEach, describe , it, expect} from "vitest";
 
 function useTaskList(){
   const [tasks, setTasks] = useState([]);
@@ -28,16 +28,6 @@ function useTaskList(){
   }
 
   return { tasks, addTask, updateTask, removeTask }
-}
-
-function useTaskTile(){
-  const [title, setTitle] = useState('');
-
-  const refreshTitle = (newTitle) => {
-    setTitle(newTitle);
-  }
-
-  return { title, refreshTitle }
 }
 
 function TaskCard({ item, update, remove }){
@@ -67,8 +57,18 @@ function ShowTaskList({ tasks, update, remove}){
   )
 }
 
+function useTaskTitle(){
+  const [title, setTitle] = useState('');
+
+  const refreshTitle = (newTitle) => {
+    setTitle(newTitle);
+  }
+  
+  return { title, refreshTitle }
+}
+
 function TaskForm({ getNewTask }){
-  const { title, refreshTitle } = useTaskTile();
+  const { title, refreshTitle } = useTaskTitle();
 
   const handleValue = (event) => {
     const newTitle = event.target.value;
