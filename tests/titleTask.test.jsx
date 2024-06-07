@@ -142,7 +142,7 @@ function TaskForm({ getNewTask }){
   )
 }
 
-describe('Crear tarea', () => {
+describe('Verificando parametros del titulo', () => {
   afterEach(cleanup);
 
   it('Deberia verificar que el primer caracter no sea un espacio vacio', () => {
