@@ -1,0 +1,11 @@
+> A partir de la primera version, debe cumplirse los siguientes pasos:
+
+  1.- Debe gestionarse el titulo de la siguiente manera:
+      >> Longitud mayor de 3 caracteres.
+      >> No puede empezar con espacios vacios.
+      >> No se permiten numeros.
+      >> Verificar que el valor inicial no se gestione (useRef).
+
+  2.- Evitar el prop drill (useContext).
+
+  3.- Hacer una busqueda de tareas.

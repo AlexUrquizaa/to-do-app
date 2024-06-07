@@ -5,5 +5,3 @@
   3.- Que se pueda completar la tarea (debe tacharse).    Listo.
   4.- Que se pueda eliminar la tarea.                     Listo.
   5.- Estructura en base de componentes y hooks.          Listo.
-
->> Inicialmente no hay grado de importancia segun la tarea.
