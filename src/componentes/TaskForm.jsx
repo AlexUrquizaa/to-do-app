@@ -1,7 +1,7 @@
 import { useTaskTitle } from "../hooks/useTaskTitle";
 
 export function TaskForm({ getNewTask }){
-  const { title, refreshTitle, error} = useTaskTitle();
+  const { title, refreshTitle, error, validateTitleSubmit} = useTaskTitle();
 
   const handleValue = (event) => {
     refreshTitle(event.target.value);
@@ -10,6 +10,7 @@ export function TaskForm({ getNewTask }){
   const handleSubmit = (event) => {
     event.preventDefault();
     if(error) return
+    if(validateTitleSubmit(title)) return
     getNewTask(title);
     refreshTitle('');
   }
@@ -20,7 +21,7 @@ export function TaskForm({ getNewTask }){
         <input type='text' onChange={handleValue} value={title} name='input-add-taskTitle' placeholder="Ingresa el titulo de la tarea"/>
         <button>Agregar</button>
       </form>
-      {error && <p color="red">{error}</p>}
+      {error && <p>{error}</p>}
     </header>
   )
 }

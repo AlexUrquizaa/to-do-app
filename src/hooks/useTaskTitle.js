@@ -9,19 +9,28 @@ export function useTaskTitle(){
     setTitle(newTitle);
   }
 
+  const validateTitleSubmit = (newTitle) => {
+    if(newTitle === ''){
+      setError('No enviaste ningun titulo');
+      return true;
+    }
+
+    if(newTitle.trim().length <= 3){
+      setError('El titulo tiene menos de 3 caracteres!');
+      return true;
+    }
+
+    setError(null);
+  }
+
   useEffect(() => {
     if(isFirstInput.current){
-      isFirstInput.current = title === '';
+      isFirstInput.current = !(title === ''); //Cambiar luego sacando el !.
       return
     }
 
     if(title.startsWith(' ')){
       setError('El titulo no puede empezar con un espacio vacio');
-      return
-    }
-
-    if(title.length <= 3){
-      setError('El titulo tiene menos de 3 caracteres!');
       return
     }
 
@@ -34,5 +43,5 @@ export function useTaskTitle(){
     setError(null);
   }, [title]);
 
-  return { title, refreshTitle, error};
+  return { title, refreshTitle, error, validateTitleSubmit};
 }

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { v4 as newTaskID }  from "uuid";
-import { render, screen, cleanup, fireEvent, getByRole, getByTitle } from "@testing-library/react";
+import { render, screen, cleanup, fireEvent, getByRole } from "@testing-library/react";
 import { afterEach, describe , it, expect} from "vitest";
 
 function useTaskList(){
@@ -81,7 +81,6 @@ function App(){
   )
 }
 
-
 function useTaskTitle(){
   const [title, setTitle] = useState('');
   const [error, setError] = useState(null);
@@ -89,6 +88,20 @@ function useTaskTitle(){
 
   const refreshTitle = (newTitle) => {
     setTitle(newTitle);
+  }
+
+  const validateTitleSubmit = (newTitle) => {
+    if(newTitle === ''){
+      setError('No enviaste ningun titulo');
+      return true;
+    }
+
+    if(newTitle.trim().length <= 3){
+      setError('El titulo tiene menos de 3 caracteres!');
+      return true;
+    }
+
+    setError(null);
   }
 
   useEffect(() => {
@@ -102,23 +115,20 @@ function useTaskTitle(){
       return
     }
 
-    if(title.length <= 3){
-      setError('El titulo tiene menos de 3 caracteres!');
-      return
-    }
-
     const isNumber = title.split('').some(char => '0123456789'.includes(char));
     if(isNumber){
       setError('El titulo no puede contener numeros');
       return
     }
+
+    setError(null);
   }, [title]);
 
-  return { title, refreshTitle, error};
+  return { title, refreshTitle, error, validateTitleSubmit};
 }
 
 function TaskForm({ getNewTask }){
-  const { title, refreshTitle, error} = useTaskTitle();
+  const { title, refreshTitle, error, validateTitleSubmit} = useTaskTitle();
 
   const handleValue = (event) => {
     refreshTitle(event.target.value);
@@ -127,6 +137,7 @@ function TaskForm({ getNewTask }){
   const handleSubmit = (event) => {
     event.preventDefault();
     if(error) return
+    if(validateTitleSubmit(title)) return
     getNewTask(title);
     refreshTitle('');
   }
@@ -144,6 +155,17 @@ function TaskForm({ getNewTask }){
 
 describe('Verificando parametros del titulo', () => {
   afterEach(cleanup);
+
+  it('Deberia verificar que no envie un titulo vacio', () => {
+    render(<App />);
+    const input = screen.getByRole('textbox');
+    const add = screen.getByText('Agregar');
+
+    fireEvent.change(input, {target: {value: ''}});
+    fireEvent.click(add);
+
+    screen.getByText('No enviaste ningun titulo');
+  });
 
   it('Deberia verificar que el primer caracter no sea un espacio vacio', () => {
     render(<App />);
@@ -172,7 +194,7 @@ describe('Verificando parametros del titulo', () => {
     const input = screen.getByRole('textbox');
     const add = screen.getByText('Agregar');
 
-    fireEvent.change(input, {target: {value: 'ho'}});
+    fireEvent.change(input, {target: {value: 'ho    '}});
     fireEvent.click(add);
 
     screen.getByText('El titulo tiene menos de 3 caracteres!');
