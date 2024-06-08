@@ -171,22 +171,14 @@ describe('Verificando parametros del titulo', () => {
   it('Deberia verificar que el primer caracter no sea un espacio vacio', () => {
     render(<App />);
     const input = screen.getByRole('textbox');
-    const add = screen.getByText('Agregar');
-    
     fireEvent.change(input, {target: {value: ' a'}});
-    fireEvent.click(add);
-
     screen.getByText('El titulo no puede empezar con un espacio vacio');
   });
 
   it('Deberia verificar que el titulo no tenga numeros', () => {
     render(<App />);
     const input = screen.getByRole('textbox');
-    const add = screen.getByText('Agregar');
-
     fireEvent.change(input, {target: {value: 'abc1234def'}});
-    fireEvent.click(add);
-
     screen.getByText('El titulo no puede contener numeros');
   });
 
