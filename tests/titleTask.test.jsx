@@ -91,6 +91,8 @@ function useTaskTitle(){
   }
 
   const validateTitleSubmit = (newTitle) => {
+    if(error) return true;
+
     if(newTitle === ''){
       setError('No enviaste ningun titulo');
       return true;
@@ -136,7 +138,6 @@ function TaskForm({ getNewTask }){
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if(error) return
     if(validateTitleSubmit(title)) return
     getNewTask(title);
     refreshTitle('');

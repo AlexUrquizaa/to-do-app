@@ -10,6 +10,8 @@ export function useTaskTitle(){
   }
 
   const validateTitleSubmit = (newTitle) => {
+    if(error) return true;
+
     if(newTitle === ''){
       setError('No enviaste ningun titulo');
       return true;
@@ -45,3 +47,4 @@ export function useTaskTitle(){
 
   return { title, refreshTitle, error, validateTitleSubmit};
 }
+
