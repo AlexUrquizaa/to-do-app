@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { v4 as newTaskID }  from "uuid";
-import { render, screen, cleanup, fireEvent, getByRole, getByTitle } from "@testing-library/react";
+import { render, screen, cleanup, fireEvent, getByRole } from "@testing-library/react";
 import { afterEach, describe , it, expect} from "vitest";
 
 function useTaskList(){
@@ -51,36 +51,13 @@ function TaskCard({ item, update, remove }){
 
 function ShowTaskList({ tasks, update, remove}){
   return(
-    tasks.map(task => (
-      <TaskCard key={task.id} item={task} update={update} remove={remove}/>
-    ))
+    <div>
+      {tasks.map(task => (
+        <TaskCard key={task.id} item={task} update={update} remove={remove}/>
+      ))}
+    </div>
   )
 }
-
-function App(){
-  const { tasks, addTask, updateTask, removeTask } = useTaskList();
-
-  const handleSubmit = (title) => {
-    addTask(title);
-  }
-
-  const handleCheck = (id) => {
-    updateTask(id);
-  }
-
-  const handleRemove = (id) => {
-    removeTask(id);
-  }
-
-  return(
-    <>
-      <h3>To-do app</h3>
-      <TaskForm getNewTask={handleSubmit}/>
-      <ShowTaskList tasks={tasks} update={handleCheck} remove={handleRemove}/>
-    </>
-  )
-}
-
 
 function useTaskTitle(){
   const [title, setTitle] = useState('');
@@ -89,6 +66,22 @@ function useTaskTitle(){
 
   const refreshTitle = (newTitle) => {
     setTitle(newTitle);
+  }
+
+  const validateTitleSubmit = (newTitle) => {
+    if(error) return true;
+
+    if(newTitle === ''){
+      setError('No enviaste ningun titulo');
+      return true;
+    }
+
+    if(newTitle.trim().length <= 3){
+      setError('El titulo tiene menos de 3 caracteres!');
+      return true;
+    }
+
+    setError(null);
   }
 
   useEffect(() => {
@@ -102,23 +95,20 @@ function useTaskTitle(){
       return
     }
 
-    if(title.length <= 3){
-      setError('El titulo tiene menos de 3 caracteres!');
-      return
-    }
-
     const isNumber = title.split('').some(char => '0123456789'.includes(char));
     if(isNumber){
       setError('El titulo no puede contener numeros');
       return
     }
+
+    setError(null);
   }, [title]);
 
-  return { title, refreshTitle, error};
+  return { title, refreshTitle, error, validateTitleSubmit};
 }
 
 function TaskForm({ getNewTask }){
-  const { title, refreshTitle, error} = useTaskTitle();
+  const { title, refreshTitle, error, validateTitleSubmit} = useTaskTitle();
 
   const handleValue = (event) => {
     refreshTitle(event.target.value);
@@ -126,7 +116,7 @@ function TaskForm({ getNewTask }){
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if(error) return
+    if(validateTitleSubmit(title)) return
     getNewTask(title);
     refreshTitle('');
   }
@@ -142,55 +132,106 @@ function TaskForm({ getNewTask }){
   )
 }
 
-describe('Crear tarea', () => {
+function useFilter({ tasks }){
+  const [ filter, setFilter ] = useState('');
+  const [ taskList, setTasks ] = useState([]);
+
+  const filterTaskList = () => {
+    const newList = tasks.filter(task => task.title.toLowerCase().startsWith(filter.toLowerCase()));
+    setTasks(newList);
+  }
+
+  useEffect(filterTaskList, [tasks, filter]);
+
+  return { setFilter, taskList };
+}
+
+function App(){
+  const { tasks, addTask, updateTask, removeTask } = useTaskList();
+  const { setFilter, taskList} = useFilter({ tasks });
+
+  const handleSubmit = (title) => {
+    addTask(title);
+  }
+
+  const handleCheck = (id) => {
+    updateTask(id);
+  }
+
+  const handleRemove = (id) => {
+    removeTask(id);
+  }
+
+  const handleFilter = (filterIs) => {
+    setFilter(filterIs);
+  }
+
+  return(
+    <>
+      <h3>To-do app</h3>
+      <TaskFormFilter getNewTaskTitle={handleFilter}/>
+      <TaskForm getNewTask={handleSubmit}/>
+      <ShowTaskList tasks={taskList} update={handleCheck} remove={handleRemove}/>
+    </>
+  )
+}
+
+// cambiar para que busque cuando hagas click en submit, es mejor en cuanto al manejo de errores.
+
+function TaskFormFilter({ getNewTaskTitle }){
+  const { title, refreshTitle, error } = useTaskTitle();
+
+  const handleFilter = (event) => {
+    const value = event.target.value;
+    refreshTitle(value);
+    getNewTaskTitle(value);
+  }
+
+  return(
+    <header>
+      <form>
+        <input type='text' onChange={handleFilter} value={title} placeholder='Buscar tarea'/>
+      </form>
+      {error && <p>{error}</p>}
+    </header>
+  )
+}
+
+describe('Verificando parametros del titulo', () => {
   afterEach(cleanup);
+
+  it('El primer renderizado no debe mostrar el mensaje de error', () => {
+    render(<App />);
+    expect(screen.queryByText('No existe este titulo')).not;
+  });
 
   it('Deberia verificar que el primer caracter no sea un espacio vacio', () => {
     render(<App />);
-    const input = screen.getByRole('textbox');
-    const add = screen.getByText('Agregar');
-    
+    const input = screen.getByPlaceholderText('Buscar tarea');
     fireEvent.change(input, {target: {value: ' a'}});
-    fireEvent.click(add);
-
     screen.getByText('El titulo no puede empezar con un espacio vacio');
-  });
-
-  it('Deberia verificar que el titulo no tenga numeros', () => {
-    render(<App />);
-    const input = screen.getByRole('textbox');
-    const add = screen.getByText('Agregar');
 
     fireEvent.change(input, {target: {value: 'abc1234def'}});
-    fireEvent.click(add);
-
     screen.getByText('El titulo no puede contener numeros');
   });
 
-  it('Deberia tener una cadena de longitud mayor a 3 caracteres', () => {
+  it('Deberia mostrar solo la tarea dos', () => {
     render(<App />);
-    const input = screen.getByRole('textbox');
+    const inputAdd = screen.getByPlaceholderText("Ingresa el titulo de la tarea");
     const add = screen.getByText('Agregar');
 
-    fireEvent.change(input, {target: {value: 'ho'}});
+    fireEvent.change(inputAdd, {target: {value: 'Tarea uno'}});
     fireEvent.click(add);
-
-    screen.getByText('El titulo tiene menos de 3 caracteres!');
-  });
-
-  it('Deberia agregar una tarea correctamente', () => {
-    render(<App />);
-    const input = screen.getByRole('textbox');
-    const add = screen.getByText('Agregar');
-    
-    fireEvent.change(input, {target: {value: 'Tarea numero uno'}});
+    fireEvent.change(inputAdd, {target: {value: 'Tarea dos'}});
     fireEvent.click(add);
-    fireEvent.change(input, {target: {value: ''}});
-    expect(input.value).toBe('');
+    fireEvent.change(inputAdd, {target: {value: ''}});
+    expect(inputAdd.value).toBe('');
+    screen.getByText('Tarea uno');
+    screen.getByText('Tarea dos');
 
-    screen.getByText('Tarea numero uno');
+    const inputSearch = screen.getByPlaceholderText('Buscar tarea');
+    fireEvent.change(inputSearch, {target: {value: 'Tarea dos'}});
+    expect(screen.queryByText('Tarea uno')).not;
+    screen.getByText('Tarea dos');
   });
-
-
 });
-

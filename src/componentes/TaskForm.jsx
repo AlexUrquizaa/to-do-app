@@ -15,13 +15,15 @@ export function TaskForm({ getNewTask }){
     refreshTitle('');
   }
 
+  const handleErrorClassName = error ? 'tooltip show-tooltip' : 'tooltip';
+
   return (
-    <header>
+    <header className="contentError">
       <form onSubmit={handleSubmit}>
         <input type='text' onChange={handleValue} value={title} name='input-add-taskTitle' placeholder="Ingresa el titulo de la tarea"/>
         <button>Agregar</button>
       </form>
-      {error && <p>{error}</p>}
+      <span className={handleErrorClassName}>{error}</span>
     </header>
   )
 }

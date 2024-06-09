@@ -1,14 +1,13 @@
 import { useTaskList } from "./hooks/useTaskList";
 import { ShowTaskList } from "./componentes/ShowTaskList";
 import { TaskForm } from "./componentes/TaskForm";
+import { useFilter } from "./hooks/useFilter";
 import './app.css';
-
-// Realizar el mismo proyecto hasta este punto pero usando tests.
-// Aplicar useContext para el useTaskCard. Asi evito el prop drill. De paso despejo el App.
-// Ver que otros hooks aplicar (useReduce, useID, useRef, useMemo/Callback).
+import { TaskFormFilter } from "./componentes/TaskFormFilter";
 
 function App(){
-  const { tasks, addTask, updateTask, removeTask} = useTaskList();
+  const { tasks, addTask, updateTask, removeTask } = useTaskList();
+  const { setFilter, taskList} = useFilter({ tasks });
 
   const handleSubmit = (title) => {
     addTask(title);
@@ -22,13 +21,18 @@ function App(){
     removeTask(id);
   }
 
-  return (
+  const handleFilter = (filterIs) => {
+    setFilter(filterIs);
+  }
+
+  return(
     <>
-      <h3>Crear listado tareas</h3><br/>
+      <h3>To-do app</h3>
+      <TaskFormFilter getNewTaskTitle={handleFilter}/>
       <TaskForm getNewTask={handleSubmit}/>
-      <ShowTaskList tasks={tasks} update={handleCheck} remove={handleRemove}/>
+      <ShowTaskList tasks={taskList} update={handleCheck} remove={handleRemove}/>
     </>
-  );
+  )
 }
 
 export default App;
