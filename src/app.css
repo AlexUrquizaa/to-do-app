@@ -83,3 +83,39 @@ article button {
 article button:hover {
   background-color: #c82333;
 }
+
+.contentError {
+  position: relative;
+}
+
+.tooltip {
+  visibility: hidden;
+  width: 200px;
+  background-color: #ffffff;
+  color: #000000;
+  text-align: center;
+  border-radius: 5px;
+  padding: 5px;
+  position: absolute;
+  bottom: 125%; /* Ajustar según la posición deseada */
+  left: 50%;
+  margin-left: -100px; /* Ajustar según el ancho del tooltip */
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #ff1100 transparent transparent transparent;
+}
+
+.show-tooltip {
+  visibility: visible;
+  opacity: 1;
+}
