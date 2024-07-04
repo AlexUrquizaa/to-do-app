@@ -1,12 +1,13 @@
 > A partir de la primera version, debe cumplirse los siguientes pasos:
 
-  1.- Debe gestionarse el titulo de la siguiente manera:
+  1.- Debe gestionarse el titulo de la siguiente manera:              Listo.
       >> Longitud mayor de 3 caracteres.
       >> No puede empezar con espacios vacios.
       >> No se permiten numeros.
       >> Verificar que el valor inicial no se gestione (useRef).
 
-  2.- Evitar el prop drill (useContext).
+  2.- Evitar el prop drill (useContext).                              Listo.
 
-  3.- Hacer una busqueda de tareas.
+  3.- Hacer una busqueda de tareas.                                   Listo.
   4.- Hacer que si el titulo al ingresar (cuando hago enter o escribo) en la busqueda me diga que no existe el titulo si no muestra nada.
+                                                                      Listo.
