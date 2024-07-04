@@ -1,0 +1,51 @@
+TO-DO APP/
+│
+├── README.md
+├── .gitignore
+├── LICENSE
+│
+├── index.html
+├── main.jsx
+├── index.css
+├── copiaSeguridad.txt
+├── versiones
+│   │
+│   │── primera version
+│   │    ├── pasos.txt
+│   │    ├── primerEstilo.png
+│   │    └── Estructurado.txt
+│   ├── segunda version
+│   │    ├── pasos.txt
+│   │    ├── segundoEstilo.png
+│   │    └── Estructurado.txt
+│   ├──
+│
+├── src/
+│   │
+│   ├── app.jsx
+│   ├── app.css
+│   ├── components/
+│   │   ├── ShowTaskList.jsx
+│   │   ├── TaskCard.jsx
+│   │   ├── TaskForm.jsx
+│   │   ├── TaskFormFilter.jsx
+│   │   ├── compsDeContexto
+│   │        │
+│   │        └── FilterContext.txt
+│   │
+│   └── hooks/
+│       ├── useTaskList.js
+│       ├── useTaskTitle.js
+│       ├── useFilter.js
+│
+├── tests/
+│   ├── t1_tasks.test.jsx
+│   ├── t2_titleTasks.test.jsx
+│   ├── t3_searchTasks.test.jsx
+│   ├── t4_textContextFiltertasks.test.jsx
+│   ├──
+│
+├── node_modules
+├── vite.config.js
+├── package.json
+└── package-lock.json
