@@ -2,7 +2,7 @@ import { useTaskTitle } from "../hooks/useTaskTitle";
 import { useFilter } from "../hooks/useFilter";
 
 export function TaskFormFilter(){
-  const { title, refreshTitle, error } = useTaskTitle();
+  const { title, refreshTitle, error, validateTitleSubmit } = useTaskTitle();
   const { setFilters } = useFilter();
 
   const handleFilter = (event) => {
@@ -11,12 +11,19 @@ export function TaskFormFilter(){
     setFilters(value);
   }
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if(validateTitleSubmit(title)) return
+    setFilters(title);
+  }
+
   return(
     <header>
-      <form>
+      <form onSubmit={handleSubmit}>
         <input type='text' onChange={handleFilter} value={title} placeholder='Buscar tarea'/>
+        <button>Buscar</button>
       </form>
-      {error && <p>{error}</p>}
+      {(error && error !== 'El titulo tiene menos de 3 caracteres!') && <p>{error}</p>}
     </header>
   )
 }

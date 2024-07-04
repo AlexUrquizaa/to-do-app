@@ -138,7 +138,7 @@ function TaskForm({ getNewTask }){
   return (
     <header>
       <form onSubmit={handleSubmit}>
-        <input type='text' onChange={handleValue} value={title} name='input-add-taskTitle' placeholder="Ingresa el titulo de la tarea"/>
+        <input type='text' onChange={handleValue} value={title} placeholder="Ingresa el titulo de la tarea"/>
         <button>Agregar</button>
       </form>
       {error && <p>{error}</p>}
@@ -175,7 +175,7 @@ function App(){
 }
 
 function TaskFormFilter(){
-  const { title, refreshTitle, error } = useTaskTitle();
+  const { title, refreshTitle, error, validateTitleSubmit } = useTaskTitle();
   const { setFilters } = useFilter();
 
   const handleFilter = (event) => {
@@ -184,12 +184,19 @@ function TaskFormFilter(){
     setFilters(value);
   }
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if(validateTitleSubmit(title)) return
+    setFilters(title);
+  }
+
   return(
     <header>
-      <form>
+      <form onSubmit={handleSubmit}>
         <input type='text' onChange={handleFilter} value={title} placeholder='Buscar tarea'/>
+        <button>Buscar</button>
       </form>
-      {error && <p>{error}</p>}
+      {(error && error !== 'El titulo tiene menos de 3 caracteres!') && <p>{error}</p>}
     </header>
   )
 }
@@ -235,6 +242,7 @@ describe('Verificando parametros del titulo usando Context Filter', () => {
         <App/>
       </FiltersProvider>
     );
+    
     const inputAdd = screen.getByPlaceholderText("Ingresa el titulo de la tarea");
     const add = screen.getByText('Agregar');
 
@@ -252,5 +260,29 @@ describe('Verificando parametros del titulo usando Context Filter', () => {
     expect(screen.queryByText('Tarea uno')).not;
     screen.getByText('Tarea dos');
     screen.getByText('Tarea doos');
+  });
+
+  it('Deberia mostrar un error si envio un titulo vacio', () => {
+    render(
+      <FiltersProvider>
+        <App/>
+      </FiltersProvider>
+    );
+
+    const inputAdd = screen.getByPlaceholderText('Ingresa el titulo de la tarea');
+    const add = screen.getByText('Agregar');
+
+    fireEvent.change(inputAdd, {target: {value: 'Tarea uno'}});
+    fireEvent.click(add);
+    fireEvent.change(inputAdd, {target: {value: 'Tarea dos'}});
+    fireEvent.click(add);
+    fireEvent.change(inputAdd, {target: {value: ''}});
+    expect(inputAdd.value).toBe('');
+
+    const inputSearch = screen.getByPlaceholderText('Buscar tarea');
+    const search = screen.getByText('Buscar');
+    fireEvent.change(inputSearch, {target: {value: ''}});
+    fireEvent.click(search);
+    screen.getByText('No enviaste ningun titulo');
   });
 });
