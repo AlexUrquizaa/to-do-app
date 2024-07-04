@@ -1,22 +1,22 @@
 import { useTaskTitle } from "../hooks/useTaskTitle";
+import { useFilter } from "../hooks/useFilter";
 
-export function TaskFormFilter({ getNewTaskTitle }){
+export function TaskFormFilter(){
   const { title, refreshTitle, error } = useTaskTitle();
+  const { setFilters } = useFilter();
 
   const handleFilter = (event) => {
     const value = event.target.value;
     refreshTitle(value);
-    getNewTaskTitle(value);
+    setFilters(value);
   }
 
-  const handleErrorClassName = error ? 'tooltip show-tooltip' : 'tooltip';
-
   return(
-    <header className="contentError">
+    <header>
       <form>
         <input type='text' onChange={handleFilter} value={title} placeholder='Buscar tarea'/>
       </form>
-      <span className={handleErrorClassName}>{error}</span>
+      {error && <p>{error}</p>}
     </header>
   )
 }

@@ -5,9 +5,9 @@ import { useFilter } from "./hooks/useFilter";
 import './app.css';
 import { TaskFormFilter } from "./componentes/TaskFormFilter";
 
-function App(){
+export function App(){
   const { tasks, addTask, updateTask, removeTask } = useTaskList();
-  const { setFilter, taskList} = useFilter({ tasks });
+  const { filterTasks } = useFilter();
 
   const handleSubmit = (title) => {
     addTask(title);
@@ -21,16 +21,14 @@ function App(){
     removeTask(id);
   }
 
-  const handleFilter = (filterIs) => {
-    setFilter(filterIs);
-  }
+  const filteredTasks = filterTasks(tasks);
 
   return(
     <>
       <h3>To-do app</h3>
-      <TaskFormFilter getNewTaskTitle={handleFilter}/>
+      <TaskFormFilter/>
       <TaskForm getNewTask={handleSubmit}/>
-      <ShowTaskList tasks={taskList} update={handleCheck} remove={handleRemove}/>
+      <ShowTaskList tasks={filteredTasks} update={handleCheck} remove={handleRemove}/>
     </>
   )
 }

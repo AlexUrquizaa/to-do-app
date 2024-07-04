@@ -1,15 +1,12 @@
-import { useState, useEffect } from "react";
+import { useContext } from "react";
+import { FiltersContext } from "../componentes/compsDeContexto/filterContext";
 
-export function useFilter({ tasks }){
-  const [ filter, setFilter ] = useState('');
-  const [ taskList, setTasks ] = useState([]);
+export function useFilter(){
+  const { filters, setFilters } = useContext(FiltersContext);
 
-  const filterTaskList = () => {
-    const newList = tasks.filter(task => task.title.toLowerCase().startsWith(filter.toLowerCase()));
-    setTasks(newList);
+  const filterTasks = ( tasks ) => {
+    return tasks.filter(task => task.title.toLowerCase().startsWith(filters.toLowerCase()));
   }
 
-  useEffect(filterTaskList, [tasks, filter]);
-
-  return { setFilter, taskList };
+  return { filterTasks, setFilters };
 }

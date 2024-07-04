@@ -1,7 +1,20 @@
-import { useEffect, useRef, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { v4 as newTaskID }  from "uuid";
 import { render, screen, cleanup, fireEvent, getByRole } from "@testing-library/react";
 import { afterEach, describe , it, expect} from "vitest";
+
+const FiltersContext = createContext();
+function FiltersProvider({ children }){
+  const [ filters, setFilters ] = useState('');
+  return(
+    <FiltersContext.Provider value={{
+      filters,
+      setFilters
+    }}>
+      {children}
+    </FiltersContext.Provider>
+  );
+}
 
 function useTaskList(){
   const [tasks, setTasks] = useState([]);
@@ -132,23 +145,9 @@ function TaskForm({ getNewTask }){
   )
 }
 
-function useFilter({ tasks }){
-  const [ filter, setFilter ] = useState('');
-  const [ taskList, setTasks ] = useState([]);
-
-  const filterTaskList = () => {
-    const newList = tasks.filter(task => task.title.toLowerCase().startsWith(filter.toLowerCase()));
-    setTasks(newList);
-  }
-
-  useEffect(filterTaskList, [tasks, filter]);
-
-  return { setFilter, taskList };
-}
-
 function App(){
   const { tasks, addTask, updateTask, removeTask } = useTaskList();
-  const { setFilter, taskList} = useFilter({ tasks });
+  const { filterTasks } = useFilter();
 
   const handleSubmit = (title) => {
     addTask(title);
@@ -162,27 +161,26 @@ function App(){
     removeTask(id);
   }
 
-  const handleFilter = (filterIs) => {
-    setFilter(filterIs);
-  }
+  const filteredTasks = filterTasks(tasks);
 
   return(
     <>
       <h3>To-do app</h3>
-      <TaskFormFilter getNewTaskTitle={handleFilter}/>
+      <TaskFormFilter/>
       <TaskForm getNewTask={handleSubmit}/>
-      <ShowTaskList tasks={taskList} update={handleCheck} remove={handleRemove}/>
+      <ShowTaskList tasks={filteredTasks} update={handleCheck} remove={handleRemove}/>
     </>
   )
 }
 
-function TaskFormFilter({ getNewTaskTitle }){
+function TaskFormFilter(){
   const { title, refreshTitle, error } = useTaskTitle();
+  const { setFilters } = useFilter();
 
   const handleFilter = (event) => {
     const value = event.target.value;
     refreshTitle(value);
-    getNewTaskTitle(value);
+    setFilters(value);
   }
 
   return(
@@ -195,17 +193,33 @@ function TaskFormFilter({ getNewTaskTitle }){
   )
 }
 
+function useFilter(){
+  const { filters, setFilters } = useContext(FiltersContext);
+
+  const filterTasks = ( tasks ) => {
+    return tasks.filter(task => task.title.toLowerCase().startsWith(filters.toLowerCase()));
+  }
+
+  return { filterTasks, setFilters };
+}
 
 describe('Verificando parametros del titulo usando Context Filter', () => {
   afterEach(cleanup);
 
-  it('El primer renderizado no debe mostrar el mensaje de error', () => {
-    render(<App />);
-    expect(screen.queryByText('No existe este titulo')).not;
+  it('Debe renderizar correctamente', () => {
+    render(
+      <FiltersProvider>
+        <App/>
+      </FiltersProvider>
+    );
   });
 
   it('Deberia verificar que el primer caracter no sea un espacio vacio', () => {
-    render(<App />);
+    render(
+      <FiltersProvider>
+        <App/>
+      </FiltersProvider>
+    );
     const input = screen.getByPlaceholderText('Buscar tarea');
     fireEvent.change(input, {target: {value: ' a'}});
     screen.getByText('El titulo no puede empezar con un espacio vacio');
@@ -214,8 +228,12 @@ describe('Verificando parametros del titulo usando Context Filter', () => {
     screen.getByText('El titulo no puede contener numeros');
   });
 
-  it('Deberia mostrar solo la tarea dos', () => {
-    render(<App />);
+  it('Deberia mostrar solo las tareas que empiezen en do', () => {
+    render(
+      <FiltersProvider>
+        <App/>
+      </FiltersProvider>
+    );
     const inputAdd = screen.getByPlaceholderText("Ingresa el titulo de la tarea");
     const add = screen.getByText('Agregar');
 
@@ -223,14 +241,15 @@ describe('Verificando parametros del titulo usando Context Filter', () => {
     fireEvent.click(add);
     fireEvent.change(inputAdd, {target: {value: 'Tarea dos'}});
     fireEvent.click(add);
+    fireEvent.change(inputAdd, {target: {value: 'Tarea doos'}});
+    fireEvent.click(add);
     fireEvent.change(inputAdd, {target: {value: ''}});
     expect(inputAdd.value).toBe('');
-    screen.getByText('Tarea uno');
-    screen.getByText('Tarea dos');
 
     const inputSearch = screen.getByPlaceholderText('Buscar tarea');
-    fireEvent.change(inputSearch, {target: {value: 'Tarea dos'}});
+    fireEvent.change(inputSearch, {target: {value: 'Tarea do'}});
     expect(screen.queryByText('Tarea uno')).not;
     screen.getByText('Tarea dos');
+    screen.getByText('Tarea doos');
   });
 });
