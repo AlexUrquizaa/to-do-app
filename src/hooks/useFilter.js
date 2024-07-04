@@ -1,4 +1,5 @@
 import { useContext } from "react";
+// import { FiltersContext } from "../componentes/compsDeContexto/FilterContext";
 import { FiltersContext } from "../componentes/compsDeContexto/FilterContext";
 
 export function useFilter(){
