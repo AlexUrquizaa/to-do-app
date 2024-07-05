@@ -1,4 +1,4 @@
-import { useTask } from "../hooks/useTaskList";
+import { useTask } from "../hooks/useTask";
 
 export function TaskCard({ item }){
   const { updateTask, removeTask } = useTask();

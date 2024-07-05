@@ -1,6 +1,6 @@
 import { TaskCard } from "./TaskCard"
 import { useFilter } from "../hooks/useFilter";
-import { useTask } from "../hooks/useTaskList";
+import { useTask } from "../hooks/useTask";
 
 export function ShowTaskList(){
   const { filterTasks } = useFilter();

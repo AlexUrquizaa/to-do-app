@@ -21,4 +21,3 @@
   7.- Ver si es posible aplicar el useReduce.
 
   8.- Hacer un localStorage.
-                                                                      
