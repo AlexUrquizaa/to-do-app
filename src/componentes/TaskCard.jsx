@@ -1,18 +1,21 @@
-export function TaskCard({ item, update, remove }){
+import { useTask } from "../hooks/useTaskList";
+
+export function TaskCard({ item }){
+  const { updateTask, removeTask } = useTask();
 
   const handleCheck = () => {
-    update(item.id);
+    updateTask(item.id);
   }
   
   const deleteTask = () => {
-    remove(item.id);
+    removeTask(item.id);
   }
 
   return(
-    <li>
+    <>
       <input type="checkbox" onChange={handleCheck} checked={item.isCompleted}/>
       <span className={item.isCompleted ? 'completed' : ''}>{item.title}</span>
       <button onClick={deleteTask}>Eliminar</button>
-    </li>    
+    </>
   )
 }

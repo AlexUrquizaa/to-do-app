@@ -1,7 +1,9 @@
 import { useTaskTitle } from "../hooks/useTaskTitle";
+import { useTask } from "../hooks/useTaskList";
 
-export function TaskForm({ getNewTask }){
-  const { title, refreshTitle, error, validateTitleSubmit} = useTaskTitle();
+export function TaskForm(){
+  const { title, refreshTitle, error, validateTitleSubmit } = useTaskTitle();
+  const { addTask } = useTask();
 
   const handleValue = (event) => {
     refreshTitle(event.target.value);
@@ -10,7 +12,7 @@ export function TaskForm({ getNewTask }){
   const handleSubmit = (event) => {
     event.preventDefault();
     if(validateTitleSubmit(title)) return
-    getNewTask(title);
+    addTask(title);
     refreshTitle('');
   }
 

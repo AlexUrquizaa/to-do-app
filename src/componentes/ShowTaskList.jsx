@@ -1,12 +1,21 @@
 import { TaskCard } from "./TaskCard"
+import { useFilter } from "../hooks/useFilter";
+import { useTask } from "../hooks/useTaskList";
 
-export function ShowTaskList({ tasks, update, remove }){
+export function ShowTaskList(){
+  const { filterTasks } = useFilter();
+  const { tasks } = useTask();
+
+  const filteredTasks = filterTasks(tasks);
+  
   return (
     <ul>
-      {tasks.length === 0 ? (<p>No hay tareas disponibles</p>) : 
+      {filteredTasks.length === 0 ? (<p>No hay tareas disponibles</p>) : 
       (
-        tasks.map(task => (
-          <TaskCard key={task.id} item={task} update={update} remove={remove}/>
+        filteredTasks.map(task => (
+          <li key={task.id}>
+            <TaskCard item={task}/>
+          </li>
         ))
       )}
     </ul>

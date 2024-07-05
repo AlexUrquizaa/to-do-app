@@ -11,3 +11,14 @@
   3.- Hacer una busqueda de tareas.                                   Listo.
   4.- Hacer que si el titulo al ingresar (cuando hago enter o escribo) en la busqueda me diga que no existe el titulo si no muestra nada.
                                                                       Listo.
+
+  5.- Aplicar useContext a las tareas.
+                                                                      Listo.
+  6.- Ver: Usar mas listas desordenadas; separar del useContext la parte del .jsx, que cada hook se encargue de su codigo. Por ultimo, Verificar
+            que mis hooks de filter y en todo caso "tasks/tareas" queden envueltos en mi context como buena practica.
+                                                                      Listo.
+
+  7.- Ver si es posible aplicar el useReduce.
+
+  8.- Hacer un localStorage.
+                                                                      

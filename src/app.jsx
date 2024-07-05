@@ -1,35 +1,20 @@
-import { useTaskList } from "./hooks/useTaskList";
-import { ShowTaskList } from "./componentes/ShowTaskList";
-import { TaskForm } from "./componentes/TaskForm";
-import { useFilter } from "./hooks/useFilter";
-import './app.css';
+import { FiltersProvider } from "./componentes/compsDeContexto/FilterContext";
 import { TaskFormFilter } from "./componentes/TaskFormFilter";
+import { TasksProvider } from "./componentes/compsDeContexto/TasksContext";
+import { TaskForm } from "./componentes/TaskForm";
+import { ShowTaskList } from "./componentes/ShowTaskList";
+import './app.css';
 
 export function App(){
-  const { tasks, addTask, updateTask, removeTask } = useTaskList();
-  const { filterTasks } = useFilter();
-
-  const handleSubmit = (title) => {
-    addTask(title);
-  }
-
-  const handleCheck = (id) => {
-    updateTask(id);
-  }
-
-  const handleRemove = (id) => {
-    removeTask(id);
-  }
-
-  const filteredTasks = filterTasks(tasks);
-
   return(
-    <>
+    <FiltersProvider>
       <h3>To-do app</h3>
       <TaskFormFilter/>
-      <TaskForm getNewTask={handleSubmit}/>
-      <ShowTaskList tasks={filteredTasks} update={handleCheck} remove={handleRemove}/>
-    </>
+      <TasksProvider>
+        <TaskForm/>
+        <ShowTaskList/>
+      </TasksProvider>
+    </FiltersProvider>
   )
 }
 
