@@ -3,6 +3,8 @@
 /* Transiciones suaves */
 * {
   transition: all 0.3s ease;
+  padding: 0;
+  margin: 0;
 }
 
 /* Estilo para el contenedor principal */
@@ -43,8 +45,12 @@ form button:hover {
   background-color: #218838;
 }
 
+ul {
+  list-style: none;
+}
+
 /* Estilo para cada tarea (article) */
-article {
+li {
   display: flex;
   align-items: center;
   background-color: white;
@@ -57,21 +63,21 @@ article {
 }
 
 /* Estilo para el checkbox */
-article input[type="checkbox"] {
+li input[type="checkbox"] {
   margin-right: 10px;
 }
 
 /* Estilo para el texto de la tarea */
-article span {
+li span {
   flex-grow: 1;
 }
 
-article span.completed {
+li span.completed {
   text-decoration: line-through;
 }
 
 /* Estilo para el botón de eliminar */
-article button {
+li button {
   background-color: #dc3545;
   color: white;
   border: none;
@@ -80,7 +86,7 @@ article button {
   cursor: pointer;
 }
 
-article button:hover {
+li button:hover {
   background-color: #c82333;
 }
 

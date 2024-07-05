@@ -9,21 +9,18 @@ export function TaskForm({ getNewTask }){
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if(error) return
     if(validateTitleSubmit(title)) return
     getNewTask(title);
     refreshTitle('');
   }
 
-  const handleErrorClassName = error ? 'tooltip show-tooltip' : 'tooltip';
-
   return (
-    <header className="contentError">
+    <header>
       <form onSubmit={handleSubmit}>
-        <input type='text' onChange={handleValue} value={title} name='input-add-taskTitle' placeholder="Ingresa el titulo de la tarea"/>
+        <input type='text' id='npt-add' name='npt-task-add' onChange={handleValue} value={title} placeholder="Ingresa el titulo de la tarea"/>
         <button>Agregar</button>
       </form>
-      <span className={handleErrorClassName}>{error}</span>
+      {error && <p>{error}</p>}
     </header>
   )
 }

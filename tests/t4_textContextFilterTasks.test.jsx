@@ -54,29 +54,33 @@ function TaskCard({ item, update, remove }){
   }
 
   return(
-    <article>
+    <>
       <input type="checkbox" onChange={handleCheck} checked={item.isCompleted}/>
-      <span>{item.title}</span>
+      <span className={item.isCompleted ? 'completed' : ''}>{item.title}</span>
       <button onClick={deleteTask}>Eliminar</button>
-    </article>    
+    </>
   )
 }
 
 function ShowTaskList({ tasks, update, remove }){
   return (
-    tasks.length === 0 ? (<p>No hay tareas disponibles</p>) : 
-    (
-      tasks.map(task => (
-        <TaskCard key={task.id} item={task} update={update} remove={remove}/>
-      ))
-    )
+    <ul>
+      {tasks.length === 0 ? (<p>No hay tareas disponibles</p>) : 
+      (
+        tasks.map(task => (
+          <li key={task.id}>
+            <TaskCard key={task.id} item={task} update={update} remove={remove}/>
+          </li>
+        ))
+      )}
+    </ul>
   )
 }
 
 function useTaskTitle(){
   const [title, setTitle] = useState('');
   const [error, setError] = useState(null);
-  let isFirstInput = useRef(true);
+  const isFirstInput = useRef(true);
 
   const refreshTitle = (newTitle) => {
     setTitle(newTitle);
@@ -100,7 +104,7 @@ function useTaskTitle(){
 
   useEffect(() => {
     if(isFirstInput.current){
-      isFirstInput.current = !(title === ''); //Cambiar luego sacando el !.
+      isFirstInput.current = !(title === '');
       return
     }
 
@@ -138,7 +142,7 @@ function TaskForm({ getNewTask }){
   return (
     <header>
       <form onSubmit={handleSubmit}>
-        <input type='text' onChange={handleValue} value={title} placeholder="Ingresa el titulo de la tarea"/>
+        <input type='text' id='npt-add' name='npt-task-add' onChange={handleValue} value={title} placeholder="Ingresa el titulo de la tarea"/>
         <button>Agregar</button>
       </form>
       {error && <p>{error}</p>}
@@ -193,7 +197,7 @@ function TaskFormFilter(){
   return(
     <header>
       <form onSubmit={handleSubmit}>
-        <input type='text' onChange={handleFilter} value={title} placeholder='Buscar tarea'/>
+        <input type='text' id='npt-search' name='npt-task-search' onChange={handleFilter} value={title} placeholder='Buscar tarea'/>
         <button>Buscar</button>
       </form>
       {(error && error !== 'El titulo tiene menos de 3 caracteres!') && <p>{error}</p>}
@@ -202,7 +206,10 @@ function TaskFormFilter(){
 }
 
 function useFilter(){
+  const context = useContext(FiltersContext);
   const { filters, setFilters } = useContext(FiltersContext);
+
+  if(context === undefined) throw new Error('No esta envuelto en su contexto');
 
   const filterTasks = ( tasks ) => {
     return tasks.filter(task => task.title.toLowerCase().startsWith(filters.toLowerCase()));

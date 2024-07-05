@@ -209,6 +209,4 @@ describe('Verificando parametros del titulo', () => {
     screen.getByText('Tarea numero uno');
   });
 
-
 });
-

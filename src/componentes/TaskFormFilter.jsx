@@ -20,7 +20,7 @@ export function TaskFormFilter(){
   return(
     <header>
       <form onSubmit={handleSubmit}>
-        <input type='text' onChange={handleFilter} value={title} placeholder='Buscar tarea'/>
+        <input type='text'  id='npt-search' name='npt-task-search' onChange={handleFilter} value={title} placeholder='Buscar tarea'/>
         <button>Buscar</button>
       </form>
       {(error && error !== 'El titulo tiene menos de 3 caracteres!') && <p>{error}</p>}
