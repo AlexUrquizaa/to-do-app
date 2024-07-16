@@ -18,6 +18,7 @@
             que mis hooks de filter y en todo caso "tasks/tareas" queden envueltos en mi context como buena practica.
                                                                       Listo.
 
-  7.- Ver si es posible aplicar el useReduce.
-
+  7.- Ver si es posible aplicar el useReduce.                         
+                                                                      Listo.
   8.- Hacer un localStorage.
+                                                                      Listo.

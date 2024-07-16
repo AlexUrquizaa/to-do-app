@@ -12,7 +12,7 @@ export function TaskForm(){
   const handleSubmit = (event) => {
     event.preventDefault();
     if(validateTitleSubmit(title)) return
-    addTask(title);
+    addTask({ title: title });
     refreshTitle('');
   }
 

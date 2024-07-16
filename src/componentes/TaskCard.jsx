@@ -4,11 +4,11 @@ export function TaskCard({ item }){
   const { updateTask, removeTask } = useTask();
 
   const handleCheck = () => {
-    updateTask(item.id);
+    updateTask(item);
   }
   
   const deleteTask = () => {
-    removeTask(item.id);
+    removeTask(item);
   }
 
   return(

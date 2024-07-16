@@ -5,7 +5,7 @@ export function FiltersProvider({ children }){
   const [ filters, setFilters ] = useState('');
 
   const filterTasks = ( tasks ) => {
-    return tasks.filter(task => task.title.toLowerCase().startsWith(filters.toLowerCase()));
+    return tasks.filter(task => task?.title?.toLowerCase().startsWith(filters.toLowerCase()));
   }
 
   return(

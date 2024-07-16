@@ -1,4 +1,4 @@
-import { TaskCard } from "./TaskCard"
+import { TaskCard } from "./TaskCard";
 import { useFilter } from "../hooks/useFilter";
 import { useTask } from "../hooks/useTask";
 
